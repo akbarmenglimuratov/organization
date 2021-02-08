@@ -1,5 +1,7 @@
 API urls
+
 `https://domen.com/api/organization/`
+
 `https://domen.com/api/account/`
 
 `GET`, `POST`, `PATCH`, `DELETE` metodlari ruxsat etilgen
@@ -20,11 +22,14 @@ Response data
     "auth_token": "5a0bd6d5a57aa7881e660f2871f4238630719dfc"
 }
 ```
-Barliq soraw (request) lar `headers`inde `auth_token` ma'nisi qosip jiberiledi.
-`headers = {"Authentication": "Token <auth_token>"}`
+Barliq soraw (request) lar `headers` inde `auth_token` ma'nisi qosip jiberiledi.
+```headers = {"Authentication": "Token <auth_token>"}```
 <hr>
-Tek `GET` methodi  */api/organization/detail/*
-`GET` arqali firmag'a tiyisli barliq mag'liwmatlar alinadi. 
+
+`GET` methodi  */api/organization/detail/*
+
+`GET` arqali firmag'a tiyisli barliq mag'liwmatlar alinadi.
+
 > /api/organization/detail/
 
 Response data 
@@ -76,8 +81,11 @@ Response data
 }
 ```
 <hr>
+
 `GET`, `POST`, `PATCH`, `DELETE` methodlarina ruxsat etilgen */api/organization/department/*
+
 `GET` arqali firmag'a tiyisli bo'limler dizimin aliw
+
 > /api/organization/department/
 
 Response data
@@ -115,6 +123,7 @@ Response data
 ]
 ```
 <hr>
+
 `GET` method arqali bo'lim haqqinda mag'liwmat aliw
 > /api/organization/department/< id >/
 
@@ -168,6 +177,7 @@ Reponse data
 }
 ```
 <hr>
+
 `DELETE` methodi arqali `id` g'a tiyisli bo'limdi o'shiriw
 > /api/organization/department/3/
 
@@ -178,6 +188,7 @@ Response data
 }
 ```
 <hr>
+
 `POST` methodi arqali jan'a bo'lim jaratiw
 > /api/organization/department/
 
@@ -202,6 +213,7 @@ Response data
 }
 ```
 <hr>
+
 `GET`, `POST`, `PATCH`, `DELETE` methodlarina ruxsat berilgen */api/organization/employee/*
 
 `GET` arqali firmag'a tiyisli jumisshilardin' dizimin aliw
@@ -234,6 +246,7 @@ Response data
 ]
 ```
 <hr>
+
 `GET` arqali `id` g'a tiyisli jumisshi mag'liwmatlarin aliw 
 > /api/organization/employee/< id >/
 
@@ -272,6 +285,7 @@ Response data
 }
 ```
 <hr>
+
 `DELETE` method `id` g'a tiyisli jumisshini o'shiriw
 > /api/organization/employee/< id >/
 
@@ -282,10 +296,12 @@ Response data
 }
 ```
 <hr>
+
 `POST` methodi arqali taza jumisshi qosiw yamsa excel file ju'klew
 > /api/organization/employee/
 
 **Add new employee**
+
 Request data
 ```
 {
@@ -300,11 +316,11 @@ Response data
     "success": true,
     "errors": {},
     "data": {
-            *taza jumisshi mag'liwmatlari*
+            taza jumisshi mag'liwmatlari
     }
 }
 ```
-**Upload file (ext: *.xls, *.xlsx)**
+**Upload file (ext: \*.xls, \*.xlsx)**
 
 Request data
 ```
