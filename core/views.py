@@ -18,7 +18,7 @@ class IsRegistredUser:
 
 class OrganizationDepartmentViewSet(viewsets.GenericViewSet, IsRegistredUser):
 	permission_classes = [UserHasCompanyPermission]
-	
+	serializer_class = DepartmentDetailSerializer
 	def get_queryset(self):
 		self.organ_id = self.get_organization_user()
 		queryset = Department.objects.filter(organization_id = self.organ_id)
@@ -81,7 +81,15 @@ class OrganizationViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		queryset = self.get_queryset()
 		organization = get_object_or_404(queryset, pk = self.organ_id.id)
 		serializer = OrganizationSerializer(organization)
-		return Response(serializer.data, status = 200)
+		context = {
+			'title': "Все данные о копмании " + serializer.data['name'],
+			'code': 200,
+			'message': "Все данные о копмании " + serializer.data['name'],
+			'payload': {
+				'data': serializer.data,
+			}
+		}
+		return Response(context, status = 200)
 
 
 class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):

@@ -16,9 +16,24 @@ class CustomAuthToken(ObtainAuthToken):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
         return Response({
-            'auth_token': token.key,
-            # 'api_key': user.organization_user.api_key,
+            'title': 'Успешная авторизация!',
+            'code': 202,
+            'message': 'Пользователь успешно авторизован!',
+            'payload': {
+                'auth_token': token.key,
+            }
         })
+
+    # def get_all_data(self,request):
+    #     queryset = Organization.objects.all()
+    #     pk = None
+    #     if self.user.organization_user.organization_id is not None:
+    #         pk = self.user.organization_user.organization_id.id
+    #     organization = get_object_or_404(queryset, pk = pk)
+    #     serializer = OrganizationSerializer(organization)
+    #     return serializer.data
+
+
 
 class ProfileViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
