@@ -1,13 +1,13 @@
 API urls
 
-`https://domen.com/api/organization/`
+`https://domen.com/api/v1/organization/`
 
-`https://domen.com/api/account/`
+`https://domen.com/api/v1/account/`
 
 `GET`, `POST`, `PATCH`, `DELETE` metodlari ruxsat etilgen
 <hr>
 
-`POST` methodi arqali `SignIn` */api/account/login/*
+`POST` methodi arqali `SignIn` */api/v1/account/login/*
 
 Request data
 ```
@@ -26,58 +26,88 @@ Barliq soraw (request) lar `headers` inde `auth_token` ma'nisi qosip jiberiledi.
 ```headers = {"Authentication": "Token <auth_token>"}```
 <hr>
 
-`GET` methodi  */api/organization/detail/*
+`GET` methodi  */api/v1/organization/detail/*
 
 `GET` arqali firmag'a tiyisli barliq mag'liwmatlar alinadi.
 
-> /api/organization/detail/
+> /api/v1/organization/detail/
 
 Response data 
 ```
 {
-    "id": 1,
-    "organizations_department": [
-        {
+    "success": true,
+    "code": 200,
+    "message": "Всё данные о копмании TexnoPOS IT mektebi",
+    "payload": {
+        "data": {
             "id": 1,
-            "department_employee": [
+            "name": "TexnoPOS IT mektebi",
+            "address": "Ǵarezsizlik kóshesi, 80/4",
+            "department": [
+                {
+                    "id": 1,
+                    "employee": [
+                        {
+                            "id": 3,
+                            "fio": "Saliq Bisenov",
+                            "phone": 998999541234,
+                            "organization_id": 1,
+                            "department_id": 1
+                        },
+                        {
+                            "id": 4,
+                            "fio": "Umida Reimbaeva",
+                            "phone": 998991234567,
+                            "organization_id": 1,
+                            "department_id": 1
+                        }
+                    ],
+                    "_employee_count": 2,
+                    "name": "Programmers",
+                    "organization_id": 1
+                },
                 {
                     "id": 2,
-                    "fio": "Timati Cook",
-                    "phone": 7654321,
-                    "organization_id": 1,
-                    "department_id": 1
+                    "employee": [
+                        {
+                            "id": 1,
+                            "fio": "Sharapat Kalabaev",
+                            "phone": 998901234567,
+                            "organization_id": 1,
+                            "department_id": 2
+                        }
+                    ],
+                    "_employee_count": 1,
+                    "name": "Administraciya",
+                    "organization_id": 1
+                },
+                {
+                    "id": 3,
+                    "employee": [
+                        {
+                            "id": 2,
+                            "fio": "Alibek Embergenov",
+                            "phone": 998911234567,
+                            "organization_id": 1,
+                            "department_id": 3
+                        }
+                    ],
+                    "_employee_count": 1,
+                    "name": "Oqitiwshilar",
+                    "organization_id": 1
                 }
             ],
-            "employee_count": 1,
-            "name": "Design",
-            "organization_id": 1
-        },
-        {
-            "id": 2,
-            "department_employee": [],
-            "employee_count": 0,
-            "name": "Mac",
-            "organization_id": 1
-        },
-        {
-            "id": 5,
-            "department_employee": [],
-            "employee_count": 0,
-            "name": "Call center",
-            "organization_id": 1
+            "_no_department_employees": [
+                {
+                    "id": 5,
+                    "fio": "Batir Urazbaev",
+                    "phone": 998931234567,
+                    "organization_id": 1,
+                    "department_id": null
+                }
+            ]
         }
-    ],
-    "no_department_employees": [
-        {
-            "id": 6,
-            "fio": "Forty Two",
-            "phone": null,
-            "organization_id": 1,
-            "department_id": null
-        }
-    ],
-    "name": "Apple",
-    "address": "USA, CA"
+    }
 }
 ```
 <hr>
@@ -86,92 +116,126 @@ Response data
 
 `GET` arqali firmag'a tiyisli bo'limler dizimin aliw
 
-> /api/organization/department/
+> /api/v1/organization/department/
 
 Response data
 ```
-[
-    {
-        "id": 1,
-        "department_employee": [
-            {
-                "id": 2,
-                "fio": "Timati Cook",
-                "phone": 7654321,
-                "organization_id": 1,
-                "department_id": 1
-            }
-        ],
-        "employee_count": 1,
-        "name": "Design",
-        "organization_id": 1
-    },
-    {
-        "id": 2,
-        "department_employee": [],
-        "employee_count": 0,
-        "name": "Mac",
-        "organization_id": 1
-    },
-    {
-        "id": 5,
-        "department_employee": [],
-        "employee_count": 0,
-        "name": "Call center",
-        "organization_id": 1
-    }
-]
+{
+    "success": true,
+    "code": 200,
+    "message": "Всё отделения компании TexnoPOS IT mektebi",
+    "payload": [
+        {
+            "id": 1,
+            "employee": [
+                {
+                    "id": 3,
+                    "fio": "Saliq Bisenov",
+                    "phone": 998999541234,
+                    "organization_id": 1,
+                    "department_id": 1
+                },
+                {
+                    "id": 4,
+                    "fio": "Umida Reimbaeva",
+                    "phone": 998991234567,
+                    "organization_id": 1,
+                    "department_id": 1
+                }
+            ],
+            "_employee_count": 2,
+            "name": "Programmers",
+            "organization_id": 1
+        },
+        {
+            "id": 2,
+            "employee": [
+                {
+                    "id": 1,
+                    "fio": "Sharapat Kalabaev",
+                    "phone": 998901234567,
+                    "organization_id": 1,
+                    "department_id": 2
+                }
+            ],
+            "_employee_count": 1,
+            "name": "Administraciya",
+            "organization_id": 1
+        },
+        {
+            "id": 3,
+            "employee": [
+                {
+                    "id": 2,
+                    "fio": "Alibek Embergenov",
+                    "phone": 998911234567,
+                    "organization_id": 1,
+                    "department_id": 3
+                }
+            ],
+            "_employee_count": 1,
+            "name": "Oqitiwshilar",
+            "organization_id": 1
+        }
+    ]
+}
 ```
 <hr>
 
 `GET` method arqali bo'lim haqqinda mag'liwmat aliw
-> /api/organization/department/< id >/
+> /api/v1/organization/department/< id >/
 
 Response data
 ```
 {
-    "id": 1,
-    "department_employee": [
-        {
-            "id": 2,
-            "fio": "Tim Cook",
-            "phone": 7654321,
-            "organization_id": 1,
-            "department_id": 1
-        }
-    ],
-    "employee_count": 1,
-    "name": "Design",
-    "organization_id": 1
+    "success": true,
+    "code": 200,
+    "message": "Отдел Administraciya",
+    "payload": {
+        "id": 2,
+        "employee": [
+            {
+                "id": 1,
+                "fio": "Sharapat Kalabaev",
+                "phone": 998901234567,
+                "organization_id": 1,
+                "department_id": 2
+            }
+        ],
+        "_employee_count": 1,
+        "name": "Administraciya",
+        "organization_id": 1
+    }
 }
 ```
 `PATCH` methodi arqali bo'lim mag'liwmatlarin o'zgertiw
-> /api/organization/department/< id >/
+> /api/v1/organization/department/< id >/
 
 Request data
 ```
 {
-    "name": "Collegue"
+    "name": "Дирекция"
 }
 ```
 Reponse data
 ```
 {
     "success": true,
-    "errors": {},
-    "data": {
-        "id": 1,
-        "department_employee": [
+    "message": "Успешно изменён!",
+    "code": 200,
+    "payload": {
+        "id": 2,
+        "employee": [
             {
-                "id": 2,
-                "fio": "Tim Cook",
-                "phone": 7654321,
+                "id": 1,
+                "fio": "Sharapat Kalabaev",
+                "phone": 998901234567,
                 "organization_id": 1,
-                "department_id": 1
+                "department_id": 2
             }
         ],
-        "employee_count": 1,
-        "name": "Colleague",
+        "_employee_count": 1,
+        "name": "Дирекция",
         "organization_id": 1
     }
 }
@@ -179,18 +243,21 @@ Reponse data
 <hr>
 
 `DELETE` methodi arqali `id` g'a tiyisli bo'limdi o'shiriw
-> /api/organization/department/3/
+> /api/v1/organization/department/2/
 
 Response data
 ```
 {
-    "success": true
+    "success": True,
+    "code": 200,
+    "message": "Дирекция успешно удалено!",
+    "payload":[],
 }
 ```
 <hr>
 
 `POST` methodi arqali jan'a bo'lim jaratiw
-> /api/organization/department/
+> /api/v1/organization/department/
 
 Request data
 ```
@@ -202,12 +269,13 @@ Response data
 ```
 {
     "success": true,
-    "errors": {},
-    "data": {
-        "id": 12,
-        "department_employee": [],
-        "employee_count": 0,
-        "name": "Taza bo'lim",
+    "code": 201,
+    "message": "Media создан!",
+    "payload": {
+        "id": 4,
+        "employee": [],
+        "_employee_count": 0,
+        "name": "Media",
         "organization_id": 1
     }
 }
@@ -217,33 +285,52 @@ Response data
 `GET`, `POST`, `PATCH`, `DELETE` methodlarina ruxsat berilgen */api/organization/employee/*
 
 `GET` arqali firmag'a tiyisli jumisshilardin' dizimin aliw
-> /api/organization/employee/
+> /api/v1/organization/employee/
 
 Response data
 ```
-[
-    {
-        "id": 3,
-        "fio": "Johny ayv",
-        "phone": 1234567,
-        "organization_id": 1,
-        "department_id": null
-    },
-    {
-        "id": 6,
-        "fio": "Forty Two",
-        "phone": null,
-        "organization_id": 1,
-        "department_id": null
-    },
-    {
-        "id": 2,
-        "fio": "Tim Cook",
-        "phone": 7654321,
-        "organization_id": 1,
-        "department_id": 1
-    }
-]
+{
+    "success": true,
+    "code": 200,
+    "message": "Список сотрудников!",
+    "payload": [
+        {
+            "id": 1,
+            "fio": "Sharapat Kalabaev",
+            "phone": 998901234567,
+            "organization_id": 1,
+            "department_id": 2
+        },
+        {
+            "id": 2,
+            "fio": "Alibek Embergenov",
+            "phone": 998911234567,
+            "organization_id": 1,
+            "department_id": 3
+        },
+        {
+            "id": 3,
+            "fio": "Saliq Bisenov",
+            "phone": 998999541234,
+            "organization_id": 1,
+            "department_id": 1
+        },
+        {
+            "id": 4,
+            "fio": "Umida Reimbaeva",
+            "phone": 998991234567,
+            "organization_id": 1,
+            "department_id": 1
+        },
+        {
+            "id": 5,
+            "fio": "Batir Urazbaev",
+            "phone": 998931234567,
+            "organization_id": 1,
+            "department_id": null
+        }
+    ]
+}
 ```
 <hr>
 
@@ -253,52 +340,62 @@ Response data
 Reponse data
 ```
 {
-    "id": 2,
-    "fio": "Tim Cook",
-    "phone": 7654321,
-    "organization_id": 1,
-    "department_id": 1
-}
+    "success": true,
+    "code": 200,
+    "message": "Данные о сотруднике!",
+    "payload": {
+        "id": 2,
+        "fio": "Alibek Embergenov",
+        "phone": 998911234567,
+        "organization_id": 1,
+        "department_id": 3
+    }
+
 ```
 `PATCH` methodi arqali `id` g'a tiyisli jumisshi mag'liwmatlarin o'zgertiw
-> /api/organization/employee/< id >/
+> /api/v1/organization/employee/< id >/
 
 Request data
 ```
 {
-   "fio": "New name",
-   "phone": "New phone number",
-   "department_id": 1
+   "fio": "Alibek Embergenov",
+   "phone": "911234567",
+   "department_id": 2
 }
 ```
 Response data
 ```
 {
     "success": true,
-    "data": {
+    "code": 200,
+    "message": "Успешно изменён!",
+    "payload": {
         "id": 2,
-        "fio": "Tim Cook",
-        "phone": New phone number(Big Int),
+        "fio": "Alibek Embergenov",
+        "phone": 911234567,
         "organization_id": 1,
-        "department_id": 1
+        "department_id": 2
     }
 }
 ```
 <hr>
 
 `DELETE` method `id` g'a tiyisli jumisshini o'shiriw
-> /api/organization/employee/< id >/
+> /api/v1/organization/employee/< id >/
 
 Response data 
 ```
 {
-   "success":True
+    "success":True,
+    "code": 200,
+    "message":"Удалено!",
+    "payload": []
 }
 ```
 <hr>
 
 `POST` methodi arqali taza jumisshi qosiw yamsa excel file ju'klew
-> /api/organization/employee/
+> /api/v1/organization/employee/
 
 **Add new employee**
 
@@ -314,9 +411,14 @@ Response data
 ```
 {
     "success": true,
-    "errors": {},
-    "data": {
-            taza jumisshi mag'liwmatlari
+    "code": 201,
+    "message": "Добавлено!",
+    "payload": {
+        "id": 6,
+        "fio": "Salamat Sarsenov",
+        "phone": 907654321,
+        "organization_id": 1,
+        "department_id": 4
     }
 }
 ```
@@ -331,8 +433,9 @@ Request data
 Response data
 ```
 {
-    "success": true,
-    "errors": {},
-    "data": {}
-}
+    "success":True, 
+    "code": 201,
+    "message": "Добавлено!",
+    "payload": [],
+},
 ```
