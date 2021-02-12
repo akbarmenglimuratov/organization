@@ -87,11 +87,11 @@ class OrganizationDepartmentViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		response_data = {
 			"success": True, 
 			# "title": department.name + " успешно удалено!", 
-			"code": 204,
+			"code": 200,
 			"message": department.name + " успешно удалено!",
 			"payload":[],
 		}
-		return Response(response_data, status = 204)
+		return Response(response_data, status = 200)
 
 	# POST
 	def create(self, request):
@@ -169,7 +169,13 @@ class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):
 	def retrieve(self, request, pk):
 		employee = self.get_object()
 		serializer = EmployeeSerializer(employee)
-		return Response(serializer.data, status = 200)
+		response_data = {
+			"success": True,
+			"code": 200,
+			"message": "Данные о сотруднике!",
+			"payload": serializer.data
+		}
+		return Response(response_data, status = 200)
 
 	def partial_update(self,request, pk):
 		employee = self.get_object()
@@ -248,8 +254,8 @@ class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		employee.delete()
 		return Response({
 				"success":True, 
-				"code": 204,
+				"code": 200,
 				"message":"Удалено!", 
 				"payload": []
 			}, 
-			status = 204)
+			status = 200)
