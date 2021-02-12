@@ -19,6 +19,7 @@ class IsRegistredUser:
 class OrganizationDepartmentViewSet(viewsets.GenericViewSet, IsRegistredUser):
 	permission_classes = [UserHasCompanyPermission]
 	serializer_class = DepartmentDetailSerializer
+
 	def get_queryset(self):
 		self.organ_id = self.get_organization_user()
 		queryset = Department.objects.filter(organization_id = self.organ_id)
@@ -34,13 +35,27 @@ class OrganizationDepartmentViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		queryset = self.get_queryset()
 		department = get_list_or_404(queryset)
 		serializer = DepartmentDetailSerializer(department, many = True)
-		return Response(serializer.data, status = 200)
+		response_data = {
+			"success": True,
+			# "title": "Всё отделения компании " + self.organ_id.name,
+			"code": 200,
+			"message": "Всё отделения компании " + self.organ_id.name,
+			"payload": serializer.data
+		}
+		return Response(response_data, status = 200)
 
 	# GET
 	def retrieve(self, request, pk):
 		department = self.get_object()
 		serializer = DepartmentDetailSerializer(department)
-		return Response(serializer.data)
+		response_data = {
+			"success":True,
+			# "title": "Отдел " + department.name,
+			"code": 200,
+			"message": "Отдел " + department.name,
+			"payload": serializer.data
+		}
+		return Response(response_data, status=200)
 
 	# PATCH
 	def partial_update(self, request, pk):
@@ -49,14 +64,34 @@ class OrganizationDepartmentViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		if serializer.is_valid():
 			serializer.save()
 		else:
-			return Response({"success":False, "errors":serializer.errors, "data":serializer.data}, status=400)
-		return Response({"success":True, "errors":serializer.errors, "data":serializer.data}, status = 202)
+			return Response({
+					"success":False, 
+					# "message":"Что то пошло не так!", 
+					"message": serializer.errors,
+					"code":400, 
+					"payload":serializer.data
+				}, 
+				status=400)
+		return Response({
+				"success":True, 
+				"message":"Успешно изменён!", 
+				"code": 200,
+				"payload":serializer.data
+			}, 
+			status = 200)
 
 	# DELETE
 	def destroy(self, request, pk):
 		department = self.get_object()
 		department.delete()
-		return Response({"success": True }, status = 204)
+		response_data = {
+			"success": True, 
+			# "title": department.name + " успешно удалено!", 
+			"code": 204,
+			"message": department.name + " успешно удалено!",
+			"payload":[],
+		}
+		return Response(response_data, status = 204)
 
 	# POST
 	def create(self, request):
@@ -65,13 +100,26 @@ class OrganizationDepartmentViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		if serializer.is_valid():
 			serializer.save(organization_id = self.organ_id)
 		else:
-			return Response({"success":False, "errors":serializer.errors, "data":serializer.data}, status = 400)
-		return Response({"success":True, "errors":serializer.errors, "data":serializer.data}, status=201)
+			return Response({
+					"success":False, 
+					"code": 400,
+					"message":serializer.errors, 
+					"payload":serializer.data
+				}, 
+				status = 400)
+		return Response({
+				"success":True, 
+				# "title": serializer.data['name'] + " создан!", 
+				"code": 201,
+				"message": serializer.data['name'] + " создан!",
+				"payload": serializer.data
+			}, 
+			status=201)
 
 
 class OrganizationViewSet(viewsets.GenericViewSet, IsRegistredUser):
 	permission_classes = [UserHasCompanyPermission]
-	
+	serializer_class = OrganizationSerializer
 	def get_queryset(self):
 		self.organ_id = self.get_organization_user()
 		queryset = Organization.objects.all()
@@ -82,9 +130,10 @@ class OrganizationViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		organization = get_object_or_404(queryset, pk = self.organ_id.id)
 		serializer = OrganizationSerializer(organization)
 		context = {
-			'title': "Все данные о копмании " + serializer.data['name'],
+			"success": True,
+			# 'title': "Всё данные о копмании " + serializer.data['name'],
 			'code': 200,
-			'message': "Все данные о копмании " + serializer.data['name'],
+			'message': "Всё данные о копмании " + serializer.data['name'],
 			'payload': {
 				'data': serializer.data,
 			}
@@ -94,10 +143,10 @@ class OrganizationViewSet(viewsets.GenericViewSet, IsRegistredUser):
 
 class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):
 	permission_classes = [UserHasCompanyPermission]
-
+	serializer_class = EmployeeSerializer
 	def get_queryset(self):
 		self.organ_id = self.get_organization_user()
-		queryset = Employee.objects.filter(organization_id = self.organ_id).order_by('department_id')
+		queryset = Employee.objects.filter(organization_id = self.organ_id)
 		return queryset
 
 	def get_object(self):
@@ -109,7 +158,13 @@ class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		queryset = self.get_queryset()
 		employee = get_list_or_404(queryset)
 		serializer = EmployeeSerializer(employee, many=True)
-		return Response(serializer.data, status = 200)
+		response_data = {
+			"success": True,
+			"code": 200,
+			"message": "Список сотрудников!",
+			"payload": serializer.data
+		}
+		return Response(response_data, status = 200)
 
 	def retrieve(self, request, pk):
 		employee = self.get_object()
@@ -122,8 +177,19 @@ class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):
 		if serializer.is_valid():
 			serializer.save(organization_id=self.organ_id)
 		else:
-			return Response({"success":False, "errors": serializer.errors }, status=400)
-		return Response({"success":True, "data": serializer.data }, status=200)
+			return Response({
+					"success":False,
+					"code": 400,
+					"message": serializer.errors 
+				}, 
+				status=400)
+		return Response({
+				"success":True,
+				"code": 200,
+				"message": "Успешно изменён!",
+				"payload": serializer.data 
+			}, 
+			status=200)
 
 	def create(self,request):
 		queryset = self.get_queryset()
@@ -132,8 +198,20 @@ class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):
 			if serializer.is_valid():
 				serializer.save(organization_id=self.organ_id)
 			else:
-				return Response({"success":False, "errors": serializer.errors, "data": serializer.data}, status=400)
-			return Response({"success":True, "errors":serializer.errors, "data": serializer.data}, status=201)
+				return Response({
+						"success":False, 
+						"code": 400, 
+						"message": serializer.errors,
+						"payload": []
+					}, 
+					status=400)
+			return Response({
+					"success":True, 
+					"code":201, 
+					"message": "Добавлено!",
+					"payload": serializer.data
+				},
+				status=201)
 
 		file = request.data['file']
 		df = pd.read_excel(file)
@@ -150,10 +228,28 @@ class EmployeeViewSet(viewsets.GenericViewSet, IsRegistredUser):
 			if serializer.is_valid():
 				serializer.save(organization_id = self.organ_id)
 			else:
-				return Response({"success":False, "errors": serializer.errors, "data": serializer.data}, status=400)
-		return Response({"success":True, "errors":serializer.errors, "data": {}}, status=201)
+				return Response({
+						"success":False,
+						"code": 400,
+						"message": serializer.errors,
+						"payload": []
+					}, 
+					status=400)
+		return Response({
+				"success":True, 
+				"code": 201,
+				"message": "Успешно!",
+				"payload": [],
+			}, 
+			status=201)
 
 	def destroy(self, request, pk):
 		employee = self.get_object()
 		employee.delete()
-		return Response({"success":True, "message":"Successful deleted!", "data": {}}, status = 204)
+		return Response({
+				"success":True, 
+				"code": 204,
+				"message":"Удалено!", 
+				"payload": []
+			}, 
+			status = 204)

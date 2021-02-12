@@ -26,7 +26,7 @@ class Department(models.Model):
 		verbose_name_plural = "Departments"
 
 	def __str__(self):
-		return str(self.id) + "_" + self.name
+		return "{0}_{1}_{2}".format(self.organization_id.name, self.id, self.name)
 
 class Employee(models.Model):
 

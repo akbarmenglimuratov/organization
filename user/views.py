@@ -24,16 +24,6 @@ class CustomAuthToken(ObtainAuthToken):
             }
         })
 
-    # def get_all_data(self,request):
-    #     queryset = Organization.objects.all()
-    #     pk = None
-    #     if self.user.organization_user.organization_id is not None:
-    #         pk = self.user.organization_user.organization_id.id
-    #     organization = get_object_or_404(queryset, pk = pk)
-    #     serializer = OrganizationSerializer(organization)
-    #     return serializer.data
-
-
 
 class ProfileViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
@@ -42,3 +32,5 @@ class ProfileViewSet(viewsets.ViewSet):
         queryset = User.objects.get(username = request.user)
         serializer = UserProfileSerializer(queryset)
         return Response(serializer.data, status = 200)
+
+        

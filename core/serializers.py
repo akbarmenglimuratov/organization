@@ -15,12 +15,13 @@ class EmployeeSerializer(serializers.ModelSerializer):
 		return obj
 
 class DepartmentDetailSerializer(serializers.ModelSerializer):
-	department_employee = EmployeeSerializer(many=True, read_only = True)
-	employee_count = serializers.SerializerMethodField()
+	employee = EmployeeSerializer(many=True, read_only = True, source = "department_employee")
+	_employee_count = serializers.SerializerMethodField()
 
-	def get_employee_count(self, obj):
+	def get__employee_count(self, obj):
 		queryset = Employee.objects.filter(organization_id=obj.organization_id, department_id = obj)
 		return queryset.count()
+		
 	class Meta:
 		model = Department
 		fields = '__all__'
@@ -28,15 +29,15 @@ class DepartmentDetailSerializer(serializers.ModelSerializer):
 
 class OrganizationSerializer(serializers.ModelSerializer):
 
-	organizations_department = DepartmentDetailSerializer(many = True)
-	no_department_employees = serializers.SerializerMethodField()
+	department = DepartmentDetailSerializer(many = True, source = "organizations_department")
+	_no_department_employees = serializers.SerializerMethodField()
 
-	def get_no_department_employees(self, obj):
+	def get__no_department_employees(self, obj):
 		queryset = Employee.objects.filter(organization_id = obj, department_id=None)
 		serializer = EmployeeSerializer(queryset, many=True)
 		return serializer.data
 
 	class Meta:
 		model = Organization
-		fields = ['id', 'name', 'address', 'organizations_department', 'no_department_employees']
+		fields = ['id', 'name', 'address', 'department', '_no_department_employees']
 
