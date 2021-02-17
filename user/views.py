@@ -17,7 +17,7 @@ class CustomAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'title': 'Успешная авторизация!',
-            'code': 202,
+            'code': 200,
             'message': 'Пользователь успешно авторизован!',
             'payload': {
                 'auth_token': token.key,
