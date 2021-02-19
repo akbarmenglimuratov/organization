@@ -134,9 +134,7 @@ class OrganizationViewSet(viewsets.GenericViewSet, IsRegistredUser):
 			# 'title': "Всё данные о копмании " + serializer.data['name'],
 			'code': 200,
 			'message': "Всё данные о копмании " + serializer.data['name'],
-			'payload': {
-				'data': serializer.data,
-			}
+			'payload': serializer.data,
 		}
 		return Response(context, status = 200)
 
